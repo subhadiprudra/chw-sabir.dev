@@ -217,7 +217,9 @@ const DeveloperPortfolio = () => {
             <button
               type="button"
               onClick={() => {
-                console.log('Projects clicked');
+                if (window.innerWidth < 1024) {
+                  setIsModalOpen(true);
+                }
                 setActiveSection('projects');
               }}
               className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl transition-all duration-300 group cursor-pointer border-2 ${activeSection === 'projects'
@@ -235,7 +237,9 @@ const DeveloperPortfolio = () => {
             <button
               type="button"
               onClick={() => {
-                console.log('Contact clicked');
+                if (window.innerWidth < 1024) {
+                  setIsModalOpen(true);
+                }
                 setActiveSection('contact');
               }}
               className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl transition-all duration-300 group cursor-pointer border-2 ${activeSection === 'contact'
@@ -533,7 +537,7 @@ const DeveloperPortfolio = () => {
                         { icon: Github, label: 'GitHub' },
                         { icon: Linkedin, label: 'LinkedIn' }
                       ].map((social, index) => (
-                        <a key={index} href="#" className="p-4 bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-xl hover:from-purple-500/30 hover:to-purple-600/20 transition-all duration-300 group">
+                        <a key={index} href="#" className="p-4 bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-xl hover:from-purple-500/30 hover:to-purple-600/20 transition-all duration-300 group hover:scale-110 border border-purple-500/30">
                           <social.icon className="w-6 h-6 text-purple-400 group-hover:animate-bounce" />
                         </a>
                       ))}
@@ -724,6 +728,137 @@ const DeveloperPortfolio = () => {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal 
+        isOpen={isModalOpen && activeSection === 'projects'} 
+        onClose={() => setIsModalOpen(false)}
+        title="Featured Projects"
+      >
+        <div className="max-w-5xl">
+          <div className="grid gap-8">
+            {projects.map((project, index) => (
+              <div key={index} className="bg-gradient-to-br from-gray-800/50 via-gray-800/30 to-gray-900/50 backdrop-blur-xl rounded-2xl p-8 border border-red-500/30 hover:border-red-500/50 transition-all duration-500 group hover:shadow-2xl hover:shadow-red-500/20 hover:scale-[1.02]">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-start gap-4">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${project.gradient} rounded-xl flex items-center justify-center group-hover:animate-pulse`}>
+                      <Rocket className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white group-hover:text-red-300 transition-colors">{project.name}</h3>
+                      <p className="text-gray-300 text-lg mt-2">{project.description}</p>
+                    </div>
+                  </div>
+                  <span className={`px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 ${project.status === 'Live'
+                      ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                      : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                    }`}>
+                    <div className={`w-2 h-2 rounded-full animate-pulse ${project.status === 'Live' ? 'bg-green-400' : 'bg-yellow-400'
+                      }`}></div>
+                    {project.status}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  {project.tech.map((tech, techIndex) => (
+                    <span key={techIndex} className="px-4 py-2 bg-red-500/20 text-red-300 rounded-full text-sm border border-red-500/30 hover:bg-red-500/30 transition-colors">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Modal>
+
+      <Modal 
+        isOpen={isModalOpen && activeSection === 'contact'} 
+        onClose={() => setIsModalOpen(false)}
+        title="Let's Create Together"
+      >
+        <div className="max-w-5xl">
+          <div className="grid gap-8">
+            <div className="bg-gradient-to-br from-gray-800/50 via-gray-800/30 to-red-900/20 backdrop-blur-xl rounded-2xl p-8 border border-red-500/30 hover:border-red-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-red-500/20">
+              <div className="flex items-center gap-3 mb-6">
+                <Heart className="w-8 h-8 text-red-500 animate-pulse" />
+                <h3 className="text-2xl font-bold text-red-400">Get In Touch</h3>
+              </div>
+
+              <p className="text-gray-300 mb-8 text-lg leading-relaxed">
+                🚀 Ready to collaborate on exciting AI/ML projects or discuss innovative solutions?
+                I'm passionate about leveraging technology to solve real-world problems and always
+                excited to connect with fellow tech enthusiasts!
+              </p>
+
+              <div className="space-y-6">
+                {[
+                  { icon: Mail, title: 'Email', value: 'mamonchw@gmail.com' },
+                  { icon: Phone, title: 'Phone', value: '+91-6296011612' },
+                  { icon: MapPin, title: 'Location', value: 'NIT Karnataka, Surathkal' }
+                ].map((contact, index) => (
+                  <div key={index} className="flex items-center gap-4 p-4 bg-gradient-to-r from-red-500/10 to-transparent rounded-xl border border-red-500/20 hover:border-red-500/40 transition-all duration-300 group hover:scale-105">
+                    <contact.icon className="w-6 h-6 text-red-500 group-hover:animate-pulse" />
+                    <div>
+                      <p className="font-medium text-white">{contact.title}</p>
+                      <p className="text-gray-300">{contact.value}</p>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="flex gap-4 pt-4">
+                  {[
+                    { icon: Github, label: 'GitHub' },
+                    { icon: Linkedin, label: 'LinkedIn' }
+                  ].map((social, index) => (
+                    <a key={index} href="#" className="p-4 bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-xl hover:from-purple-500/30 hover:to-purple-600/20 transition-all duration-300 group hover:scale-110 border border-purple-500/30">
+                      <social.icon className="w-6 h-6 text-purple-400 group-hover:animate-bounce" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-gray-800/50 via-gray-800/30 to-purple-900/20 backdrop-blur-xl rounded-2xl p-8 border border-red-500/30 hover:border-purple-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20">
+              <div className="flex items-center gap-3 mb-6">
+                <Star className="w-8 h-8 text-purple-400 animate-spin" />
+                <h3 className="text-2xl font-bold text-purple-400">Send a Message</h3>
+              </div>
+
+              <form className="space-y-6">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    className="w-full p-4 bg-gray-700/50 border border-red-500/30 rounded-xl text-white placeholder-gray-400 focus:border-red-500/70 focus:outline-none transition-all duration-300 hover:border-red-500/50"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    className="w-full p-4 bg-gray-700/50 border border-red-500/30 rounded-xl text-white placeholder-gray-400 focus:border-red-500/70 focus:outline-none transition-all duration-300 hover:border-red-500/50"
+                  />
+                </div>
+                <div>
+                  <textarea
+                    placeholder="Your Message"
+                    rows="5"
+                    className="w-full p-4 bg-gray-700/50 border border-red-500/30 rounded-xl text-white placeholder-gray-400 focus:border-red-500/70 focus:outline-none transition-all duration-300 resize-none hover:border-red-500/50"
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-red-500 to-purple-500 hover:from-red-600 hover:to-purple-600 text-white font-medium py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center gap-2 group"
+                >
+                  <Rocket className="w-5 h-5 group-hover:animate-bounce" />
+                  Send Message
+                  <Star className="w-4 h-4 group-hover:animate-spin" />
+                </button>
+              </form>
             </div>
           </div>
         </div>
